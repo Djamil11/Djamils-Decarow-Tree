@@ -1,12 +1,12 @@
 let modInfo = {
-	name: "The ??? Tree",
-	author: "nobody",
-	pointsName: "points",
+	name: "The Decarow Tree",
+	author: "Djamil Ibrahimov",
+	pointsName: "of nothing",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new Decimal (10), // Used for hard resets and new players
+	initialStartPoints: new Decimal (0), // Used for hard resets and new players
 	offlineLimit: 1,  // In hours
 }
 
@@ -42,6 +42,20 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade('b', 11)) gain = gain.times(2)
+    if (buyableEffect('b', 11)) gain = gain.times(buyableEffect('b', 11))
+	if (hasUpgrade('b', 12)) gain = gain.times(upgradeEffect('b', 12))
+	if (buyableEffect('b', 13)) gain = gain.times(buyableEffect('b', 13))
+	if (hasUpgrade('b', 14)) gain = gain.times(5)
+	if (buyableEffect('b', 15)) gain = gain.times(buyableEffect('b', 15))
+	if (buyableEffect('b', 21)) gain = gain.times(buyableEffect('b', 21))
+	if (buyableEffect('b', 23)) gain = gain.times(buyableEffect('b', 23))
+	if (buyableEffect('b', 25)) gain = gain.times(buyableEffect('b', 25))
+	if (hasUpgrade('b', 22)) gain = gain.times(3)
+	if (hasUpgrade('b', 23)) gain = gain.times(upgradeEffect('b', 23))
+	if (hasUpgrade('p', 11)) gain = gain.times(5)
+	gain = softcap(gain, new Decimal(10), new Decimal(0.5))
+    gain = softcap(gain, new Decimal(1000000), new Decimal(0.25))  
 	return gain
 }
 
@@ -57,8 +71,6 @@ var displayThings = [
 function isEndgame() {
 	return player.points.gte(new Decimal("e280000000"))
 }
-
-
 
 // Less important things beyond this point!
 
